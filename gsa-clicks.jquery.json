@@ -1,0 +1,26 @@
+{
+  "name": "gsa-clicks",
+  "title": "Google Search Appliance Click Tracking",
+  "description": "A simple jQuery plugin to integrate GSA Advanced Search Reporting with custom built search interfaces.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/asmallwebfirm/gsa-clicks",
+  "author": {
+    "name": "Eric Peterson",
+    "email": "eric@asmallwebfirm.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:asmallwebfirm/gsa-clicks.git"
+  },
+  "bugs": "https://github.com/asmallwebfirm/gsa-clicks/issues",
+  "licenses": [
+    {
+      "type": "GPL-2.0",
+      "url": "https://github.com/asmallwebfirm/gsa-clicks/blob/master/LICENSE"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.2.3"
+  },
+  "keywords": []
+}
