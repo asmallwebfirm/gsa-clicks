@@ -60,6 +60,58 @@
     expect(expectedCallCount + 1);
   });
 
+  test('rank data written as expected', function() {
+    var testClickTypes = {c: '.result'},
+        originalWrite = $.fn.gsaClicks.write,
+        writeCallCount = 0,
+        expectedCallCount = $('.result').length;
+
+    // Mock the write method.
+    $.fn.gsaClicks.write = function(attribute, data) {
+      if (attribute === 'gsa-rank') {
+        ++writeCallCount;
+        ok(this.is('.result'), 'attempting to write rank to correct element');
+        strictEqual(data, writeCallCount, 'correct rank written to element');
+      }
+    };
+
+    // Call gsaClicks with our options.
+    this.fixture.gsaClicks({clickTypes: testClickTypes});
+
+    // Ensure rank data is written the correct number of times.
+    strictEqual(writeCallCount, expectedCallCount, 'should write rank data ' + expectedCallCount + ' times');
+
+    // Reset the mocked method for subsequent tests.
+    $.fn.gsaClicks.write = originalWrite;
+
+    // Two assertions per expected call + the expected count assertion later.
+    expect(expectedCallCount * 2 + 1);
+  });
+
+  test('rank data only written for element sets', function() {
+    var testClickTypes = {onebox: '.onebox'},
+        originalWrite = $.fn.gsaClicks.write,
+        writeCallCount = 0;
+
+    // Mock the write method.
+    $.fn.gsaClicks.write = function(attribute) {
+      if (attribute === 'gsa-rank') {
+        ++writeCallCount;
+      }
+    };
+
+    // Call gsaClicks with our options.
+    this.fixture.gsaClicks({clickTypes: testClickTypes});
+
+    // Ensure rank data is written the correct number of times.
+    strictEqual(writeCallCount, 0, 'should not write rank data on single elements');
+
+    // Reset the mocked method for subsequent tests.
+    $.fn.gsaClicks.write = originalWrite;
+
+    expect(1);
+  });
+
   test('data read as expected on click', function() {
     var readCallCount = {
           'gsa-clicktype' : 0,
