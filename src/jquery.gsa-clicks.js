@@ -32,6 +32,13 @@
             $.fn.gsaClicks.write.call($(this), 'gsa-rank', index + 1);
           });
         }
+
+        // Users can provide custom clickData by setting clickData to a function
+        // that returns a string to be passed to the GSA based on the element.
+        if (typeof options.clickData === 'function') {
+          // We write the data returned by the callback.
+          $.fn.gsaClicks.write.call($selected, 'gsa-clickdata', options.clickData($selected, clickType));
+        }
       }
     });
 

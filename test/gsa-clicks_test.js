@@ -112,6 +112,64 @@
     expect(1);
   });
 
+  test('clickData only written when a callback is defined', function() {
+    var testClickTypes = {onebox: '.onebox'},
+      originalWrite = $.fn.gsaClicks.write,
+      writeCallCount = 0;
+
+    // Mock the write method.
+    $.fn.gsaClicks.write = function(attribute) {
+      if (attribute === 'gsa-clickdata') {
+        ++writeCallCount;
+      }
+    };
+
+    // Call gsaClicks with our options.
+    this.fixture.gsaClicks({clickTypes: testClickTypes});
+
+    // Ensure rank data is written the correct number of times.
+    strictEqual(writeCallCount, 0, 'should not write clickData without a defined callback');
+
+    // Reset the mocked method for subsequent tests.
+    $.fn.gsaClicks.write = originalWrite;
+
+    expect(1);
+  });
+
+  test('clickData written as expected', function() {
+    var testClickData = 'test click data',
+        testOptions = {
+          clickTypes: {onebox: '.onebox'},
+          clickData: function() {
+            return testClickData;
+          }
+        },
+        originalWrite = $.fn.gsaClicks.write,
+        writeCallCount = 0,
+        expectedCallCount = $('.onebox').length;
+
+    // Mock the write method.
+    $.fn.gsaClicks.write = function(attribute, data) {
+      if (attribute === 'gsa-clickdata') {
+        ++writeCallCount;
+        ok(this.is('.onebox'), 'attempting to write clickData to correct element');
+        strictEqual(data, testClickData, 'correct clickData written to element');
+      }
+    };
+
+    // Call gsaClicks with our options.
+    this.fixture.gsaClicks(testOptions);
+
+    // Ensure rank data is written the correct number of times.
+    strictEqual(writeCallCount, expectedCallCount, 'should write click data ' + expectedCallCount + ' times');
+
+    // Reset the mocked method for subsequent tests.
+    $.fn.gsaClicks.write = originalWrite;
+
+    // Two assertions per expected call + the expected count assertion later.
+    expect(expectedCallCount * 2 + 1);
+  });
+
   test('data read as expected on click', function() {
     var readCallCount = {
           'gsa-clicktype' : 0,
