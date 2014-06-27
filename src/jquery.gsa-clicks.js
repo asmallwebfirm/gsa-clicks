@@ -17,9 +17,21 @@
     options = $.extend(true, options, $.fn.gsaClicks.options, optionOverrides);
 
     $.each(options.clickTypes, function (clickType, selector) {
+      var $selected;
+
       if (selector) {
+        // Save off the selected element(s).
+        $selected = $(selector);
+
         // Mark the click type for each selected element.
-        $.fn.gsaClicks.write.call($(selector), 'gsa-clicktype', clickType);
+        $.fn.gsaClicks.write.call($selected, 'gsa-clicktype', clickType);
+
+        // Mark rank for click types with multiple elements.
+        if ($selected.length > 1) {
+          $selected.each(function(index) {
+            $.fn.gsaClicks.write.call($(this), 'gsa-rank', index + 1);
+          });
+        }
       }
     });
 
