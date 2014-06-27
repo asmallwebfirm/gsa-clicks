@@ -191,7 +191,237 @@
     // This will run before each test in this module.
     setup: function() {
       this.fixture = $('#qunit-fixture a');
+
+      // Some basic test properties.
+      this.testAttr = 'attribute';
+      this.testValue = 'value';
+      this.testClickType = 'onebox';
+      this.testUrl = 'http://example.com/target-link';
+      this.testRank = 5;
+      this.testClickData = 'some-data';
+
+      // Set some default options for convenience.
+      this.defaultOptions = {
+        host: 'http://example.com',
+        collection: 'test_collection',
+        query: 'test query',
+        start: 10
+      };
+
+      // Set a base for click URL expectations.
+      this.expectedClickUrlBase = this.defaultOptions.host + '/click?site=' +
+        encodeURIComponent(this.defaultOptions.collection) + '&q=' +
+        encodeURIComponent(this.defaultOptions.query) + '&s=' +
+        encodeURIComponent(this.defaultOptions.start);
     }
+  });
+
+  test('write method implementation', function() {
+    var originalData = $.fn.data,
+        dataData = {},
+        testElementClass = 'some-class',
+        $testElement = $('<a />').attr('class', testElementClass);
+
+    // Mock the jQuery data method.
+    $.fn.data = function(attribute, data) {
+      dataData.elem = this;
+      dataData[attribute] = data;
+    };
+
+    // Call the write method.
+    $.fn.gsaClicks.write.call($testElement, this.testAttr, this.testValue);
+
+    // Assert correct data.
+    ok(dataData.elem.is('.' + testElementClass), 'jQuery data called on correct element');
+    strictEqual(dataData[this.testAttr], this.testValue, 'jQuery data called correctly');
+
+    // Reset mocked method for subsequent tests.
+    $.fn.data = originalData;
+
+    expect(2);
+  });
+
+  test('read method implementation', function() {
+    var originalData = $.fn.data,
+      dataData = {},
+      testElementClass = 'some-class',
+      $testElement = $('<a />').attr('class', testElementClass),
+      parent = this;
+
+    // Mock the jQuery data method.
+    $.fn.data = function(attribute) {
+      if (attribute === parent.testAttr) {
+        dataData.elem = this;
+        return parent.testValue;
+      }
+    };
+
+    // Call the read method.
+    dataData.return = $.fn.gsaClicks.read.call($testElement, this.testAttr);
+
+    // Assert correct data.
+    ok(dataData.elem.is('.' + testElementClass), 'jQuery data called on correct element');
+    strictEqual(dataData.return, this.testValue, 'jQuery data called correctly');
+
+    // Reset mocked method for subsequent tests.
+    $.fn.data = originalData;
+
+    expect(2);
+  });
+
+  test('click method implementation all values', function() {
+    var originalCreateElement = document.createElement,
+        createElementData = {},
+        $testElement = $('<a />'),
+        expectedClickUrl = this.expectedClickUrlBase + '&ct=' +
+          encodeURIComponent(this.testClickType) + '&url=' +
+          encodeURIComponent(this.testUrl) + '&r=' +
+          encodeURIComponent(this.testRank) + '&cd=' +
+          encodeURIComponent(this.testClickData);
+
+    // Mock the document.createElement method.
+    document.createElement = function(tag) {
+      if (tag === 'img') {
+        return createElementData;
+      }
+    };
+
+    // Invoke gsaClicks to set default options.
+    this.fixture.gsaClicks(this.defaultOptions);
+
+    // Call the click method.
+    $.fn.gsaClicks.click.call($testElement, this.testClickType, this.testUrl, this.testRank, this.testClickData);
+
+    // Ensure image source matches expectations.
+    strictEqual(createElementData.src, expectedClickUrl, 'created image element with expected src');
+
+    // Reset mocked method for subsequent tests.
+    document.createElement = originalCreateElement;
+
+    expect(1);
+  });
+
+
+  test('click method implementation no targetUrl', function() {
+    var originalCreateElement = document.createElement,
+      createElementData = {},
+      $testElement = $('<a />'),
+      expectedClickUrl = this.expectedClickUrlBase + '&ct=' +
+        encodeURIComponent(this.testClickType) + '&r=' +
+        encodeURIComponent(this.testRank) + '&cd=' +
+        encodeURIComponent(this.testClickData);
+
+    // Mock the document.createElement method.
+    document.createElement = function(tag) {
+      if (tag === 'img') {
+        return createElementData;
+      }
+    };
+
+    // Invoke gsaClicks to set default options.
+    this.fixture.gsaClicks(this.defaultOptions);
+
+    // Call the click method.
+    $.fn.gsaClicks.click.call($testElement, this.testClickType, null, this.testRank, this.testClickData);
+
+    // Ensure image source matches expectations.
+    strictEqual(createElementData.src, expectedClickUrl, 'created image element with expected src');
+
+    // Reset mocked method for subsequent tests.
+    document.createElement = originalCreateElement;
+
+    expect(1);
+  });
+
+  test('click method implementation no rank', function() {
+    var originalCreateElement = document.createElement,
+      createElementData = {},
+      $testElement = $('<a />'),
+      expectedClickUrl = this.expectedClickUrlBase + '&ct=' +
+        encodeURIComponent(this.testClickType) + '&url=' +
+        encodeURIComponent(this.testUrl) + '&cd=' +
+        encodeURIComponent(this.testClickData);
+
+    // Mock the document.createElement method.
+    document.createElement = function(tag) {
+      if (tag === 'img') {
+        return createElementData;
+      }
+    };
+
+    // Invoke gsaClicks to set default options.
+    this.fixture.gsaClicks(this.defaultOptions);
+
+    // Call the click method.
+    $.fn.gsaClicks.click.call($testElement, this.testClickType, this.testUrl, null, this.testClickData);
+
+    // Ensure image source matches expectations.
+    strictEqual(createElementData.src, expectedClickUrl, 'created image element with expected src');
+
+    // Reset mocked method for subsequent tests.
+    document.createElement = originalCreateElement;
+
+    expect(1);
+  });
+
+  test('click method implementation no click data', function() {
+    var originalCreateElement = document.createElement,
+      createElementData = {},
+      $testElement = $('<a />'),
+      expectedClickUrl = this.expectedClickUrlBase + '&ct=' +
+        encodeURIComponent(this.testClickType) + '&url=' +
+        encodeURIComponent(this.testUrl) + '&r=' +
+        encodeURIComponent(this.testRank);
+
+    // Mock the document.createElement method.
+    document.createElement = function(tag) {
+      if (tag === 'img') {
+        return createElementData;
+      }
+    };
+
+    // Invoke gsaClicks to set default options.
+    this.fixture.gsaClicks(this.defaultOptions);
+
+    // Call the click method.
+    $.fn.gsaClicks.click.call($testElement, this.testClickType, this.testUrl, this.testRank, null);
+
+    // Ensure image source matches expectations.
+    strictEqual(createElementData.src, expectedClickUrl, 'created image element with expected src');
+
+    // Reset mocked method for subsequent tests.
+    document.createElement = originalCreateElement;
+
+    expect(1);
+  });
+
+  test('click method implementation undefined values', function() {
+    var originalCreateElement = document.createElement,
+      createElementData = {},
+      $testElement = $('<a />'),
+      expectedClickUrl = this.expectedClickUrlBase + '&ct=' +
+        encodeURIComponent(this.testClickType);
+
+    // Mock the document.createElement method.
+    document.createElement = function(tag) {
+      if (tag === 'img') {
+        return createElementData;
+      }
+    };
+
+    // Invoke gsaClicks to set default options.
+    this.fixture.gsaClicks(this.defaultOptions);
+
+    // Call the click method.
+    $.fn.gsaClicks.click.call($testElement, this.testClickType);
+
+    // Ensure image source matches expectations.
+    strictEqual(createElementData.src, expectedClickUrl, 'created image element with expected src');
+
+    // Reset mocked method for subsequent tests.
+    document.createElement = originalCreateElement;
+
+    expect(1);
   });
 
 }(jQuery));
