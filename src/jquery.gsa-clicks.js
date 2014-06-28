@@ -67,6 +67,8 @@
   $.fn.gsaClicks.options = {
     // Host against which click calls should be made (exclude /click path part).
     host: '',
+    // Click path part; only override if necessary.
+    pathPart: '/click',
     // Collection for which search results are being presented.
     collection: 'default_collection',
     // Query string that resulted in the results presented.
@@ -122,7 +124,7 @@
         src;
 
     // Construct the image src parameter.
-    src = options.host + '/click' +
+    src = options.host + options.pathPart +
       "?site=" + encodeURIComponent(options.collection) +
       "&q=" + encodeURIComponent(options.query) +
       "&s=" + encodeURIComponent(options.start) +
