@@ -3,7 +3,14 @@ language: node_js
 node_js:
   - 0.10
 
+env:
+  - secure: "OWTP2QsspfMLdOC/m/ZA4vdmjhq2WMB8ageAz/gIhLBWdz9gv21Ad/zsSvoAhpA+LaHO6NDIcYiV3jDqW5bzdiJbPQvazhHNuaWie07FIQRSXZ9EJjZCwjGEiJ9ICIQJ9HeDFPUdZpVxcL/EGxEbgR+QJy92sOCY3Lpyry3YwaM="
+
 before_script:
   - npm install -g grunt-cli
+  - npm install -g codeclimate-test-reporter
 
 script: grunt test --verbose
+
+after_script:
+  - codeclimate < report/lcov.info
