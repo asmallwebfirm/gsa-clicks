@@ -1,4 +1,6 @@
-# GSA Click Tracking [![Build Status](https://travis-ci.org/asmallwebfirm/gsa-clicks.svg)](https://travis-ci.org/asmallwebfirm/gsa-clicks)
+# GSA Click Tracking [![Build Status](https://travis-ci.org/asmallwebfirm/gsa-clicks.svg)](https://travis-ci.org/asmallwebfirm/gsa-clicks) [![Code Climate](https://codeclimate.com/github/asmallwebfirm/gsa-clicks.png)](https://codeclimate.com/github/asmallwebfirm/gsa-clicks) [![Code Coverage](https://codeclimate.com/github/asmallwebfirm/gsa-clicks/coverage.png)](https://codeclimate.com/github/asmallwebfirm/gsa-clicks)
+
+
 
 A simple jQuery plugin to integrate Google Search Appliance Advanced Search Reporting with custom built search interfaces.
 
