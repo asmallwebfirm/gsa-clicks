@@ -22,5 +22,9 @@
   "dependencies": {
     "jquery": ">=1.2.3"
   },
-  "keywords": []
+  "keywords": [
+    "analytics",
+    "google search appliance",
+    "gsa"
+  ]
 }
