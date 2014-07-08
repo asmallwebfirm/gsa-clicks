@@ -14,7 +14,7 @@
   // Collection method.
   $.fn.gsaClicks = function(optionOverrides) {
     // Override default options with passed-in options.
-    options = $.extend(true, options, $.fn.gsaClicks.options, optionOverrides);
+    options = $.extend(options, $.fn.gsaClicks.options, optionOverrides);
 
     $.each(options.clickTypes, function (clickType, selector) {
       var $selected;
