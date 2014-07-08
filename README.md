@@ -58,7 +58,7 @@ to the GSA. No need to do so yourself.
 #### Defining click types
 
 The GSA recognizes a predefined set of click types (a full list of which is
-available [in the GSA documentation](), or in the Appendix, below). This plugin
+available [in the GSA documentation][], or in the Appendix, below). This plugin
 allows you to define which anchors are associated with corresponding click types
 using the "clickType" property during initialization.
 
