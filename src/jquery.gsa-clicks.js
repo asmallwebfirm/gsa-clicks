@@ -76,33 +76,8 @@
     // The page start of the results presented.
     start: 0,
     // An object whose keys are click types and whose values are selectors used
-    // to attach click type data
-    clickTypes: {
-      'advanced' : '',
-      'advanced_swr' : '',
-      'c' : '',
-      'cache' : '',
-      'cluster' : '',
-      'db' : '',
-      'desk.groups' : '',
-      'desk.images' : '',
-      'desk.local' : '',
-      'desk.news' : '',
-      'desk.web': '',
-      'help' : '',
-      'keymatch' : '',
-      'load' : '',
-      'logo' : '',
-      'nav.next' : '',
-      'nav.page' : '',
-      'nav.prev' : '',
-      'onebox' : '',
-      'sitesearch' : '',
-      'sort' : '',
-      'spell' : '',
-      'synonym' : '',
-      'OTHER' : ''
-    }
+    // to attach click type data.
+    clickTypes: {}
   };
 
   /**
